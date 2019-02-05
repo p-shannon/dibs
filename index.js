@@ -1,8 +1,14 @@
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 3001;
-const path = require('path')
+const path = require('path');
 
+app.use('*', (req, res, next) => {
+	let timestamp = new Date(Date.now());
+	console.log(timestamp.toString());
+	console.log(req.baseUrl||"/");
+	next();
+});
 app.use('/browse', require('./server/routes/browseRouter'));
 app.use('/item', require('./server/routes/itemRouter'));
 
@@ -16,7 +22,7 @@ app.use('/item', require('./server/routes/itemRouter'));
 
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.send("Hello World");
 });
 
 app.listen(port, function () {
